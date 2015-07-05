@@ -3,7 +3,7 @@
 #include <QWidget>
 
 qObjectnode::
-qObjectnode(QObject *data, QGraphicsItem *parent) : GraphicsNode(parent)
+qObjectnode(QObject *data, QGraphicsItem *parent, bool autodelete) : GraphicsNode(parent),m_autodelete(autodelete)
 {
 	m_data=data;
 	if(m_data==0)

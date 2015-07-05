@@ -1,11 +1,14 @@
 /* See LICENSE file for copyright and license details. */
 
+#include "graphicsbezieredge.hpp"
+#include "graphicsnode.hpp"
 #include "graphicsnodescene.hpp"
 #include <cmath>
 #include <QPainter>
 #include <QGraphicsTextItem>
 #include <algorithm>
 #include <iostream>
+#include <QApplication>
 
 // TODO: move to graphicsnodeview. use graphicsnodescene for management
 
@@ -32,6 +35,41 @@ GraphicsNodeScene::GraphicsNodeScene(QObject *parent)
 	auto nulltext = this->addText("(0,0)", QFont("Ubuntu Mono"));
 	nulltext->setPos(0, 0);
 	nulltext->setDefaultTextColor(_color_null);
+}
+
+void GraphicsNodeScene::addItem(GraphicsNode *n)
+{
+	nodes.append(n);
+	QGraphicsScene::addItem(n);
+}
+
+void GraphicsNodeScene::addItem(GraphicsDirectedEdge *e)
+{
+	edges.append(e);
+	QGraphicsScene::addItem(e);
+}
+
+
+void GraphicsNodeScene::removeItem(GraphicsNode *n)
+{
+	QGraphicsScene::removeItem(n);
+	nodes.removeOne(n);
+	delete n;
+}
+
+void GraphicsNodeScene::removeItem(GraphicsDirectedEdge *e)
+{
+	QGraphicsScene::removeItem(e);
+	edges.removeOne(e);
+	delete e;
+}
+
+void GraphicsNodeScene::clear()
+{
+	while(edges.count())
+		removeItem(edges.first());
+	while(nodes.count())
+		removeItem(nodes.first());
 }
 
 /*

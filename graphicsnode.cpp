@@ -60,7 +60,6 @@ GraphicsNode::GraphicsNode(QGraphicsItem *parent)
 	_effect->setBlurRadius(13.0);
 	_effect->setColor(QColor("#99121212"));
 	setGraphicsEffect(_effect);
-
 }
 
 
@@ -75,11 +74,31 @@ setTitle(const QString &title)
 GraphicsNode::
 ~GraphicsNode()
 {
+	QList<GraphicsNodeSocket*>::iterator it=_sources.begin();
+	QList<GraphicsNodeSocket*>::iterator end=_sources.end();
+	for(;it!=end;it++)
+	{
+		(*it);
+		delete *it;
+	}
+	_sources.clear();
+
+	it=_sinks.begin();
+	end=_sinks.end();
+	for(;it!=end;it++)
+	{
+		delete *it;
+	}
+	_sinks.clear();
+
+	_changed=true;
+	prepareGeometryChange();
+	updateGeometry();
+
 	if (_central_proxy) delete _central_proxy;
 	delete _title_item;
 	delete _effect;
 }
-
 
 QRectF GraphicsNode::
 boundingRect() const

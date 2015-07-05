@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QPainterPath>
 
+
 class QResizeEvent;
 class GraphicsNodeView;
 class GraphicsNodeScene;
@@ -18,6 +19,11 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow();
 
+protected slots:
+	void doClear();
+	void doDemo();
+	void doSave();
+	void doLoad();
 protected:
 	virtual void resizeEvent(QResizeEvent *event);
 

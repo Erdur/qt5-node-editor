@@ -51,6 +51,11 @@ GraphicsNodeSocket(GraphicsNodeSocketType socket_type, const QString &text, QGra
 	setAcceptDrops(true);
 }
 
+GraphicsNodeSocket::~GraphicsNodeSocket()
+{
+
+}
+
 
 GraphicsNodeSocket::GraphicsNodeSocketType GraphicsNodeSocket::
 socket_type() const {

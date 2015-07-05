@@ -38,6 +38,7 @@ public:
 
 	GraphicsNodeSocket(GraphicsNodeSocketType socket_type, QGraphicsItem *parent = nullptr);
 	GraphicsNodeSocket(GraphicsNodeSocketType socket_type, const QString &text, QGraphicsItem *parent = nullptr,QObject *data=0,int index=0);
+	virtual ~GraphicsNodeSocket();
 
 	virtual QRectF boundingRect() const override;
 

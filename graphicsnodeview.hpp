@@ -30,7 +30,6 @@ struct EdgeDragEvent
 	drag_mode mode;
 };
 
-
 struct NodeResizeEvent
 {
 	GraphicsNode *node;

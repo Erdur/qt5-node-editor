@@ -18,6 +18,7 @@
 #include <QButtonGroup>
 #include <QString>
 #include <QLineEdit>
+#include <QMenuBar>
 
 #include <iostream>
 
@@ -30,11 +31,29 @@
 #include "qobjectnode.hpp"
 #include "test_qobjects.hpp"
 
-
 MainWindow::MainWindow()
 : _view(nullptr)
 , _scene(nullptr)
 {
+	QMenu* fileMenu=new QMenu("File");
+	menuBar()->addMenu(fileMenu);
+
+	QAction* tmpAction;
+	tmpAction = new QAction(tr("Clear"), this);
+	connect(tmpAction, SIGNAL(triggered()), this, SLOT(doClear()));
+	fileMenu->addAction(tmpAction);
+	tmpAction = new QAction(tr("Demo"), this);
+	connect(tmpAction, SIGNAL(triggered()), this, SLOT(doDemo()));
+	fileMenu->addAction(tmpAction);
+
+	fileMenu->addSeparator();
+	tmpAction = new QAction(tr("Save"), this);
+	connect(tmpAction, SIGNAL(triggered()), this, SLOT(doSave()));
+	fileMenu->addAction(tmpAction);
+	tmpAction = new QAction(tr("Load"), this);
+	connect(tmpAction, SIGNAL(triggered()), this, SLOT(doLoad()));
+	fileMenu->addAction(tmpAction);
+
 
 	// create and configure scene
 	_scene = new GraphicsNodeScene(this);
@@ -44,11 +63,47 @@ MainWindow::MainWindow()
 	_view = new GraphicsNodeView(this);
 	_view->setScene(_scene);
 	this->setCentralWidget(_view);
+}
 
+void MainWindow::doClear()
+{
+	_scene->clear();
+}
 
-	// add some content
-	//addFakeContent()
-	addNodeViews();
+void MainWindow::doDemo()
+{
+	QObject* t1 = new QLineEdit();
+	qObjectnode* n1 = new qObjectnode(t1);
+	_scene->addItem(n1);
+	n1->setPos(0,0);
+
+	t1 = new testnode1();
+	qObjectnode* n2 = new qObjectnode(t1);
+	_scene->addItem(n2);
+	n2->setPos(0+n1->width()*1.5,0);
+
+	GraphicsDirectedEdge* e12 = new GraphicsBezierEdge();
+	e12->connect(n1,0,n2,0);
+	_scene->addItem(e12);
+
+	t1 = new QLineEdit();
+	qObjectnode* n3 = new qObjectnode(t1);
+	_scene->addItem(n3);
+	n3->setPos(n2->pos().x()+n2->width()*1.5,0);
+
+	GraphicsDirectedEdge* e23 = new GraphicsBezierEdge();
+	e23->connect(n2,0,n3,0);
+	_scene->addItem(e23);
+}
+
+void MainWindow::doSave()
+{
+
+}
+
+void MainWindow::doLoad()
+{
+
 }
 
 void MainWindow::
@@ -88,53 +143,5 @@ addFakeContent()
 	auto widget2 = new QTextEdit();
 	auto proxy2 = _scene->addWidget(widget2);
 	proxy2->setPos(0, 60);
-}
-
-
-void MainWindow::
-addNodeViews()
-{
-	/*
-	for (int i = 0; i < 5; i++) {
-		auto n = new GraphicsNode();
-		for (int j = i; j < 5; j++) {
-			n->setPos(i * 25, i * 25);
-			n->add_sink("sink");
-			n->add_source("source");
-		}
-
-		if (i == 4) {
-			QTextEdit *te = new QTextEdit();
-			n->setCentralWidget(te);
-		}
-
-		n->setTitle(QString("GraphicsNode %1").arg(i));
-
-		_scene->addItem(n);
-	}
-	*/
-
-	QObject* t1 = new QLineEdit();
-	qObjectnode* n1 = new qObjectnode(t1);
-	_scene->addItem(n1);
-	n1->setPos(0,0);
-
-	t1 = new testnode1();
-	qObjectnode* n2 = new qObjectnode(t1);
-	_scene->addItem(n2);
-	n2->setPos(0+n1->width()*1.5,0);
-
-	GraphicsDirectedEdge* e12 = new GraphicsBezierEdge();
-	e12->connect(n1,0,n2,0);
-	_scene->addItem(e12);
-
-	t1 = new QLineEdit();
-	qObjectnode* n3 = new qObjectnode(t1);
-	_scene->addItem(n3);
-	n3->setPos(n2->pos().x()+n2->width()*1.5,0);
-
-	GraphicsDirectedEdge* e23 = new GraphicsBezierEdge();
-	e23->connect(n2,0,n3,0);
-	_scene->addItem(e23);
 }
 

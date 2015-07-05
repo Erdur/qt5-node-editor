@@ -50,7 +50,7 @@ public:
 
 	int type() const override {
 		return GraphicsNodeItemTypes::TypeNode;
-	};
+	}
 
 	qreal width() const {
 		return _width;
@@ -72,6 +72,7 @@ public:
 	 */
 	void setCentralWidget(QWidget *widget);
 
+	void propagateChanges();
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -81,7 +82,7 @@ private:
 	void updateGeometry();
 	void updatePath();
 	void updateSizeHints();
-	void propagateChanges();
+//	void propagateChanges();
 
 private:
 	// TODO: change pairs of sizes to QPointF, QSizeF, or quadrupels to QRectF
@@ -121,8 +122,8 @@ private:
 
 	QString _title;
 
-	std::vector<GraphicsNodeSocket*> _sources;
-	std::vector<GraphicsNodeSocket*> _sinks;
+	QList<GraphicsNodeSocket*> _sources;
+	QList<GraphicsNodeSocket*> _sinks;
 };
 
 #endif /* __GRAPHICSNODE_HPP__0707C377_95A2_4E0B_B98B_7E4813001982 */
